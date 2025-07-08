@@ -1,0 +1,22 @@
+services:
+  mysql-service:
+    image: mysql:8
+    container_name: mysql-service-contaienr
+    environment:
+      MYSQL_ROOT_PASSWORD: admin
+      MYSQL_DATABASE: mydb
+    ports:
+      - "3307:3306" # Map port 3307 on your host machine to port 3306 inside the container.
+    volumes:
+      # - mysql-data:/var/lib/mysql
+      - ./sql:/docker-entrypoint-initdb.d
+
+  adminer-service:
+    image: adminer
+    container_name: adminer-ui-container
+    ports:
+      - "8080:8080"  # Open browser at http://localhost:8080
+  
+networks:
+  default:
+    name: my-network
