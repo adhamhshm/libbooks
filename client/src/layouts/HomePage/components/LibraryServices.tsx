@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom';
 
 const LibraryServices = () => {
 
@@ -17,16 +18,15 @@ const LibraryServices = () => {
                         <a type='button' className='btn main-color btn-lg px-4 me-md-2 fw-bold text-white'>
                             Library Services
                         </a> 
-                        {/* {authState?.isAuthenticated ? 
+                        {/* {authState?.isAuthenticated ?  */}
                             <Link to='/messages' type='button' className='btn main-color btn-lg px-4 me-md-2 fw-bold text-white'>
                                 Library Services
                             </Link>   
-                            :
+                            {/* :
                             <Link className='btn main-color btn-lg text-white' to='/login'>
                                 Sign up
                             </Link> 
                         } */}
-
                     </div>
                 </div>
                 <div className='col-lg-4 offset-lg-1 shadow-lg lost-image'></div>
