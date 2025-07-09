@@ -3,12 +3,30 @@ import type BookModel from "../../models/BookModel";
 import SpinnerLoading from "../Utils/SpinnerLoading";
 import StarsReview from "../Utils/StarsReview";
 import CheckoutAndReviewBox from "./components/CheckoutAndReviewBox";
+import type ReviewModel from "../../models/ReviewModel";
+import LatestReviews from "./components/LatestReviews";
 
 const BookCheckoutPage = () => {
 
     const [book, setBook] = useState<BookModel>();
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [httpError, setHttpError] = useState<string | null>(null);
+
+    // Review State
+    const [reviews, setReviews] = useState<ReviewModel[]>([])
+    const [totalStars, setTotalStars] = useState(0);
+    const [isLoadingReview, setIsLoadingReview] = useState(true);
+
+    const [isReviewLeft, setIsReviewLeft] = useState(false);
+    const [isLoadingUserReview, setIsLoadingUserReview] = useState(true);
+
+    // Loans Count State
+    const [currentLoansCount, setCurrentLoansCount] = useState(0);
+    const [isLoadingCurrentLoansCount, setIsLoadingCurrentLoansCount] = useState(true);
+
+    // Is Book Check Out?
+    const [isCheckedOut, setIsCheckedOut] = useState(false);
+    const [isLoadingBookCheckedOut, setIsLoadingBookCheckedOut] = useState(true);
 
     const bookId = (window.location.pathname).split('/')[2];
 
@@ -50,8 +68,53 @@ const BookCheckoutPage = () => {
 
     }, []);
 
+    useEffect(() => {
+        const fetchBookReviews = async () => {
+            const reviewUrl: string = `http://localhost:8081/api/reviews/search/findByBookId?bookId=${bookId}`;
+
+            const responseReviews = await fetch(reviewUrl);
+
+            if (!responseReviews.ok) {
+                throw new Error('Something went wrong!');
+            }
+
+            const responseJsonReviews = await responseReviews.json();
+            const responseData = responseJsonReviews._embedded.reviews;
+            const loadedReviews: ReviewModel[] = [];
+
+            let weightedStarReviews: number = 0;
+
+            for (const key in responseData) {
+                loadedReviews.push({
+                    id: responseData[key].id,
+                    userEmail: responseData[key].userEmail,
+                    date: responseData[key].date,
+                    rating: responseData[key].rating,
+                    book_id: responseData[key].bookId,
+                    reviewDescription: responseData[key].reviewDescription,
+                });
+                weightedStarReviews = weightedStarReviews + responseData[key].rating;
+            }
+
+            if (loadedReviews) {
+                const round = (Math.round((weightedStarReviews / loadedReviews.length) * 2) / 2).toFixed(1);
+                setTotalStars(Number(round));
+            }
+
+            setReviews(loadedReviews);
+            setIsLoadingReview(false);
+        };
+
+        fetchBookReviews().then(() => {
+            setIsLoadingReview(false);
+        }).catch((error) => {
+            setIsLoadingReview(false);
+            setHttpError(error.message);
+        });
+    }, [isReviewLeft]);
+
     // Handle loading state
-    if (isLoading) {
+    if (isLoading || isLoadingReview) {
         return (
             <SpinnerLoading/>
         )
@@ -91,7 +154,7 @@ const BookCheckoutPage = () => {
                             <h2>{book?.title}</h2>
                             <h5 className='text-primary'>{book?.author}</h5>
                             <p className='lead'>{book?.description}</p>
-                            <StarsReview rating={3.5} size={32} />
+                            <StarsReview rating={totalStars} size={32} />
                         </div>
                     </div>
                     <CheckoutAndReviewBox 
@@ -106,7 +169,7 @@ const BookCheckoutPage = () => {
                     />
                 </div>
                 <hr />
-                {/* <LatestReviews reviews={reviews} bookId={book?.id} mobile={false} /> */}
+                <LatestReviews reviews={reviews} bookId={book?.id} mobile={false} />
             </div>
             <div className='container d-lg-none mt-5'>
                 <div className='d-flex justify-content-center alighn-items-center'>
@@ -130,8 +193,7 @@ const BookCheckoutPage = () => {
                         <h2>{book?.title}</h2>
                         <h5 className='text-primary'>{book?.author}</h5>
                         <p className='lead'>{book?.description}</p>
-                        <StarsReview rating={3.5} size={32} />
-                        {/* <StarsReview rating={totalStars} size={32} /> */}
+                        <StarsReview rating={totalStars} size={32} />
                     </div>
                 </div>
                 <CheckoutAndReviewBox 
@@ -145,7 +207,7 @@ const BookCheckoutPage = () => {
                     // submitReview={submitReview}
                 />
                 <hr />
-                {/* <LatestReviews reviews={reviews} bookId={book?.id} mobile={true} /> */}
+                <LatestReviews reviews={reviews} bookId={book?.id} mobile={true} />
             </div>
         </div>
     );
