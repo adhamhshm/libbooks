@@ -4,6 +4,7 @@ import HomePage from './layouts/HomePage/HomePage'
 import Footer from './layouts/NavbarAndFooter/Footer'
 import Navbar from './layouts/NavbarAndFooter/Navbar'
 import SearchBooksPage from './layouts/SearchBooksPage/SearchBooksPage'
+import BookCheckoutPage from './layouts/BookCheckoutPage/BookCheckoutPage'
 
 const App = () => {
 
@@ -15,6 +16,7 @@ const App = () => {
                 <Route path='/' element={<Navigate to="/home" replace />} />
                 <Route path='/home' element={<HomePage />} />
                 <Route path='/search' element={<SearchBooksPage />} />
+                <Route path='/checkout/:bookId' element={<BookCheckoutPage />} />
             </Routes>
             </div>
             <Footer />
