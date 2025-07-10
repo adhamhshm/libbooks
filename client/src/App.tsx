@@ -5,6 +5,7 @@ import Footer from './layouts/NavbarAndFooter/Footer'
 import Navbar from './layouts/NavbarAndFooter/Navbar'
 import SearchBooksPage from './layouts/SearchBooksPage/SearchBooksPage'
 import BookCheckoutPage from './layouts/BookCheckoutPage/BookCheckoutPage'
+import LoginPage from './auth/LoginPage'
 
 const App = () => {
 
@@ -17,6 +18,7 @@ const App = () => {
                 <Route path='/home' element={<HomePage />} />
                 <Route path='/search' element={<SearchBooksPage />} />
                 <Route path='/checkout/:bookId' element={<BookCheckoutPage />} />
+                <Route path='/login' element={<LoginPage />} />
             </Routes>
             </div>
             <Footer />
