@@ -6,6 +6,7 @@ import CheckoutAndReviewBox from "./components/CheckoutAndReviewBox";
 import type ReviewModel from "../../models/ReviewModel";
 import LatestReviews from "./components/LatestReviews";
 import { useAuth0 } from "@auth0/auth0-react";
+import ReviewRequestModel from "../../models/ReviewRequestModel";
 
 const BookCheckoutPage = () => {
 
@@ -117,6 +118,49 @@ const BookCheckoutPage = () => {
     }, [isReviewLeft]);
 
     useEffect(() => {
+        const fetchUserReviewBook = async () => {
+            // if (isAuthenticated) {
+            //     // const url = `http://localhost:8080/api/reviews/secure/user/book/?bookId=${bookId}`;
+            //     const accessToken = await getAccessTokenSilently();
+            //     const url = `http://localhost:8080/api/reviews/secure/user/book?bookId=${bookId}`;
+
+            //     const requestOptions = {
+            //         method: 'GET',
+            //         headers: {
+            //             Authorization: `Bearer ${accessToken}`,
+            //             'Content-Type': 'application/json'
+            //         }
+            //     };
+            //     const userReview = await fetch(url, requestOptions);
+            //     if (!userReview.ok) {
+            //         throw new Error('Something went wrong');
+            //     }
+            //     const userReviewResponseJson = await userReview.json();
+            //     setIsReviewLeft(userReviewResponseJson);
+            // }
+            const url = `http://localhost:8081/api/reviews/secure/user/book?bookId=${bookId}`;
+            const requestOptions = {
+                method: 'GET',
+                headers: {
+                    //Authorization: `Bearer ${accessToken}`,
+                    'Content-Type': 'application/json'
+                }
+            };
+            const userReview = await fetch(url, requestOptions);
+            if (!userReview.ok) {
+                throw new Error('Something went wrong');
+            }
+            const userReviewResponseJson = await userReview.json();
+            setIsReviewLeft(userReviewResponseJson);
+            setIsLoadingUserReview(false);
+        }
+        fetchUserReviewBook().catch((error: any) => {
+            setIsLoadingUserReview(false);
+            setHttpError(error.message);
+        })
+    }, [bookId]); // isAuthenticated, getAccessTokenSilently
+
+    useEffect(() => {
         const fetchUserCurrentLoansCount = async () => {
             // if (isAuthenticated) {
             //     const accessToken = await getAccessTokenSilently();
@@ -204,7 +248,7 @@ const BookCheckoutPage = () => {
     }, [bookId]); // isAuthenticated, getAccessTokenSilently
 
     // Handle loading state
-    if (isLoading || isLoadingReview) {
+    if (isLoading || isLoadingReview || isLoadingCurrentLoansCount || isLoadingBookCheckedOut || isLoadingUserReview) {
         return (
             <SpinnerLoading/>
         )
@@ -236,6 +280,30 @@ const BookCheckoutPage = () => {
             throw new Error('Something went wrong!');
         }
         setIsCheckedOut(true);
+    }
+
+    async function submitReview(starInput: number, reviewDescription: string) {
+        let bookId: number = 0;
+        if (book?.id) {
+            bookId = book.id;
+        }
+
+        const reviewRequestModel = new ReviewRequestModel(starInput, bookId, reviewDescription);
+        const url = `http://localhost:8081/api/reviews/secure`;
+        //const accessToken = await getAccessTokenSilently();
+        const requestOptions = {
+            method: 'POST',
+            headers: {
+                //Authorization: `Bearer ${accessToken}`,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(reviewRequestModel)
+        };
+        const returnResponse = await fetch(url, requestOptions);
+        if (!returnResponse.ok) {
+            throw new Error('Something went wrong! Unable to submit review.');
+        }
+        setIsReviewLeft(true);
     }
 
     return (
@@ -273,8 +341,8 @@ const BookCheckoutPage = () => {
                         // isAuthenticated={isAuthenticated} 
                         isCheckedOut={isCheckedOut} 
                         checkoutBook={checkoutBook} 
-                        // isReviewLeft={isReviewLeft} 
-                        // submitReview={submitReview}
+                        isReviewLeft={isReviewLeft} 
+                        submitReview={submitReview}
                     />
                 </div>
                 <hr />
@@ -309,11 +377,11 @@ const BookCheckoutPage = () => {
                     book={book} 
                     mobile={true} 
                     currentLoansCount={currentLoansCount} 
-                    // y
+                    // isAuthenticated={isAuthenticated} 
                     isCheckedOut={isCheckedOut} 
                     checkoutBook={checkoutBook} 
-                    // isReviewLeft={isReviewLeft} 
-                    // submitReview={submitReview}
+                    isReviewLeft={isReviewLeft} 
+                    submitReview={submitReview}
                 />
                 <hr />
                 <LatestReviews reviews={reviews} bookId={book?.id} mobile={true} />
