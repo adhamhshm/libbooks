@@ -6,6 +6,7 @@ import Navbar from './layouts/NavbarAndFooter/Navbar'
 import SearchBooksPage from './layouts/SearchBooksPage/SearchBooksPage'
 import BookCheckoutPage from './layouts/BookCheckoutPage/BookCheckoutPage'
 import LoginPage from './auth/LoginPage'
+import { Auth0Provider, withAuthenticationRequired } from '@auth0/auth0-react';
 
 const App = () => {
 
