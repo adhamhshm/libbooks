@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
-// can point to http://localhost:8081/api/books
 public interface BookRepository extends JpaRepository<Book, Long> {
 
     Page<Book> findByTitleContaining(@RequestParam("title") String title, Pageable pageable);
