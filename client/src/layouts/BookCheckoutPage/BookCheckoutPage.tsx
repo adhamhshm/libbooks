@@ -70,7 +70,7 @@ const BookCheckoutPage = () => {
             setIsLoading(false);
         });
 
-    }, []);
+    }, [isCheckedOut, bookId]);  // getAccessTokenSilently,
 
     useEffect(() => {
         const fetchBookReviews = async () => {
@@ -115,7 +115,7 @@ const BookCheckoutPage = () => {
             setIsLoadingReview(false);
             setHttpError(error.message);
         });
-    }, [isReviewLeft]);
+    }, [isReviewLeft, bookId]);
 
     useEffect(() => {
         const fetchUserReviewBook = async () => {
