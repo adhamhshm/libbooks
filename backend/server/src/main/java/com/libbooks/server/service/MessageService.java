@@ -2,9 +2,12 @@ package com.libbooks.server.service;
 
 import com.libbooks.server.entity.Message;
 import com.libbooks.server.repository.MessageRepository;
+import com.libbooks.server.request.AdminQuestionRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -23,16 +26,16 @@ public class MessageService {
         messageRepository.save(message);
     }
 
-//    public void putMessage(AdminQuestionRequest adminQuestionRequest, String userEmail) throws Exception {
-//        Optional<Message> message = messageRepository.findById(adminQuestionRequest.getId());
-//        if (!message.isPresent()) {
-//            throw new Exception("Message not found");
-//        }
-//
-//        message.get().setAdminEmail(userEmail);
-//        message.get().setResponse(adminQuestionRequest.getResponse());
-//        message.get().setClosed(true);
-//        messageRepository.save(message.get());
-//    }
+    public void putMessage(AdminQuestionRequest adminQuestionRequest, String userEmail) throws Exception {
+        Optional<Message> message = messageRepository.findById(adminQuestionRequest.getId());
+        if (!message.isPresent()) {
+            throw new Exception("Message not found");
+        }
+
+        message.get().setAdminEmail(userEmail);
+        message.get().setResponse(adminQuestionRequest.getResponse());
+        message.get().setClosed(true);
+        messageRepository.save(message.get());
+    }
 
 }

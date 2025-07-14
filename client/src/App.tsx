@@ -10,6 +10,7 @@ import { Auth0Provider, withAuthenticationRequired } from '@auth0/auth0-react';
 import ReviewListPage from './layouts/ReviewListPage/ReviewListPage'
 import ShelfPage from './layouts/ShelfPage/ShelfPage'
 import MessagesPage from './layouts/MessagesPage/MessagesPage'
+import ManageLibraryPage from './layouts/ManageLibraryPage/ManageLibraryPage'
 
 const App = () => {
 
@@ -24,6 +25,7 @@ const App = () => {
                 <Route path='/checkout/:bookId' element={<BookCheckoutPage />} />
                 <Route path='/reviewlist/:bookId' element={<ReviewListPage />} />
                 <Route path='/messages' element={<MessagesPage />} />
+                <Route path='/admin' element={<ManageLibraryPage />} />
                 <Route path='/shelf' element={<ShelfPage />} />
                 <Route path='/login' element={<LoginPage />} />
             </Routes>
