@@ -22,7 +22,7 @@ const SearchBooksPage = () => {
         // Initialize the fetching books function
         const fetchBooks = async () => {
 
-            const baseUrl = "http://localhost:8081/api/books";
+            const baseUrl = `${import.meta.env.VITE_REACT_API_APP}/books`;
             
             let url: string = '';
 

@@ -18,7 +18,7 @@ const Loans = () => {
         const fetchUserCurrentLoans = async () => {
             // if (isAuthenticated) {
             //     const accessToken = await getAccessTokenSilently();
-            //     const url = `http://localhost:8081/api/books/secure/currentloans`;
+            //     const url = `${import.meta.env.VITE_REACT_API_APP}/books/secure/currentloans`;
             //     const requestOptions = {
             //         method: 'GET',
             //         headers: {
@@ -33,7 +33,7 @@ const Loans = () => {
             //     const shelfCurrentLoansResponseJson = await shelfCurrentLoansResponse.json();
             //     setShelfCurrentLoans(shelfCurrentLoansResponseJson);
             // }
-            const url = `http://localhost:8081/api/books/secure/currentloans`;
+            const url = `${import.meta.env.VITE_REACT_API_APP}/books/secure/currentloans`;
             const requestOptions = {
                 method: 'GET',
                 headers: {
@@ -73,7 +73,7 @@ const Loans = () => {
     }
 
     async function returnBook(bookId: number) {
-        const url = `http://localhost:8081/api/books/secure/return?bookId=${bookId}`;
+        const url = `${import.meta.env.VITE_REACT_API_APP}/books/secure/return?bookId=${bookId}`;
         // const accessToken = await getAccessTokenSilently();
         const requestOptions = {
             method: 'PUT',
@@ -90,7 +90,7 @@ const Loans = () => {
     }
 
     async function renewLoan(bookId: number) {
-        const url = `http://localhost:8081/api/books/secure/renew/loan?bookId=${bookId}`;
+        const url = `${import.meta.env.VITE_REACT_API_APP}/books/secure/renew/loan?bookId=${bookId}`;
         // const accessToken = await getAccessTokenSilently();
         const requestOptions = {
             method: 'PUT',

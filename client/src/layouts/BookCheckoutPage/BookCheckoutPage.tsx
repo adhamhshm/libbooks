@@ -39,7 +39,7 @@ const BookCheckoutPage = () => {
         // Initialize the fetching books function
         const fetchBook = async () => {
 
-            const url = `http://localhost:8081/api/books/${bookId}`;
+            const url = `${import.meta.env.VITE_REACT_API_APP}/books/${bookId}`;
             const response = await fetch(url);
 
             if (!response.ok) {
@@ -74,7 +74,7 @@ const BookCheckoutPage = () => {
 
     useEffect(() => {
         const fetchBookReviews = async () => {
-            const reviewUrl: string = `http://localhost:8081/api/reviews/search/findByBookId?bookId=${bookId}`;
+            const reviewUrl: string = `${import.meta.env.VITE_REACT_API_APP}/reviews/search/findByBookId?bookId=${bookId}`;
 
             const responseReviews = await fetch(reviewUrl);
 
@@ -138,7 +138,7 @@ const BookCheckoutPage = () => {
             //     const userReviewResponseJson = await userReview.json();
             //     setIsReviewLeft(userReviewResponseJson);
             // }
-            const url = `http://localhost:8081/api/reviews/secure/user/book?bookId=${bookId}`;
+            const url = `${import.meta.env.VITE_REACT_API_APP}/reviews/secure/user/book?bookId=${bookId}`;
             const requestOptions = {
                 method: 'GET',
                 headers: {
@@ -164,7 +164,7 @@ const BookCheckoutPage = () => {
         const fetchUserCurrentLoansCount = async () => {
             // if (isAuthenticated) {
             //     const accessToken = await getAccessTokenSilently();
-            //     const url = `http://localhost:8081/api/books/secure/currentloans/count`;
+            //     const url = `${import.meta.env.VITE_REACT_API_APP}/books/secure/currentloans/count`;
             //     const requestOptions = {
             //         method: 'GET',
             //         headers: { 
@@ -179,7 +179,7 @@ const BookCheckoutPage = () => {
             //     const currentLoansCountResponseJson = await currentLoansCountResponse.json();
             //     setCurrentLoansCount(currentLoansCountResponseJson);
             // }
-            const url = `http://localhost:8081/api/books/secure/currentloans/count`;
+            const url = `${import.meta.env.VITE_REACT_API_APP}/books/secure/currentloans/count`;
             const requestOptions = {
                 method: 'GET',
                 headers: { 
@@ -205,7 +205,7 @@ const BookCheckoutPage = () => {
         const checkIsUserCheckedOutBook = async () => {
             // if (isAuthenticated) {
             //     const accessToken = await getAccessTokenSilently();
-            //     const url = `http://localhost:8081/api/books/secure/ischeckedout/byuser?bookId=${bookId}`;
+            //     const url = `${import.meta.env.VITE_REACT_API_APP}/books/secure/ischeckedout/byuser?bookId=${bookId}`;
 
             //     const requestOptions = {
             //         method: 'GET',
@@ -223,7 +223,7 @@ const BookCheckoutPage = () => {
             //     const bookCheckedOutResponseJson = await bookCheckedOut.json();
             //     setIsCheckedOut(bookCheckedOutResponseJson);
             // }
-            const url = `http://localhost:8081/api/books/secure/ischeckedout/byuser?bookId=${bookId}`;
+            const url = `${import.meta.env.VITE_REACT_API_APP}/books/secure/ischeckedout/byuser?bookId=${bookId}`;
             const requestOptions = {
                 method: 'GET',
                 headers: {
@@ -266,7 +266,7 @@ const BookCheckoutPage = () => {
     async function checkoutBook() {
         // const url = `http://localhost:8080/api/books/secure/checkout/?bookId=${book?.id}`;
         // const accessToken = await getAccessTokenSilently();
-        const url = `http://localhost:8081/api/books/secure/checkout?bookId=${book?.id}`;
+        const url = `${import.meta.env.VITE_REACT_API_APP}/books/secure/checkout?bookId=${book?.id}`;
 
         const requestOptions = {
             method: 'PUT',
@@ -289,7 +289,7 @@ const BookCheckoutPage = () => {
         }
 
         const reviewRequestModel = new ReviewRequestModel(starInput, bookId, reviewDescription);
-        const url = `http://localhost:8081/api/reviews/secure`;
+        const url = `${import.meta.env.VITE_REACT_API_APP}/reviews/secure`;
         //const accessToken = await getAccessTokenSilently();
         const requestOptions = {
             method: 'POST',

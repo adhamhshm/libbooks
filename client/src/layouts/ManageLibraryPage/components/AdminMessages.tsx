@@ -29,7 +29,7 @@ const AdminMessages = () => {
         const fetchUserMessages = async () => {
             // if (isAuthenticated) {
             //     const accessToken = await getAccessTokenSilently();
-            //     const url = `http://localhost:8081/api/messages/search/findByClosed?closed=false&page=${currentPage - 1}&size=${messagesPerPage}`;
+            //     const url = `${import.meta.env.VITE_REACT_API_APP}/messages/search/findByClosed?closed=false&page=${currentPage - 1}&size=${messagesPerPage}`;
             //     const requestOptions = {
             //         method: 'GET',
             //         headers: {
@@ -47,7 +47,7 @@ const AdminMessages = () => {
             //     setTotalPages(messagesResponseJson.page.totalPages);
             // }
 
-            const url = `http://localhost:8081/api/messages/search/findByClosed?closed=false&page=${currentPage - 1}&size=${messagesPerPage}`;
+            const url = `${import.meta.env.VITE_REACT_API_APP}/messages/search/findByClosed?closed=false&page=${currentPage - 1}&size=${messagesPerPage}`;
             const requestOptions = {
                 method: 'GET',
                 headers: {
@@ -88,7 +88,7 @@ const AdminMessages = () => {
 
 
     async function submitResponseToQuestion(id: number, response: string) {
-        const url = `http://localhost:8081/api/messages/secure/admin/message`;
+        const url = `${import.meta.env.VITE_REACT_API_APP}/messages/secure/admin/message`;
         // const accessToken = await getAccessTokenSilently();
         if (id !== null && response !== '') { // isAuthenticated &&
             const messageAdminRequestModel: AdminMessageRequestModel = new AdminMessageRequestModel(id, response);

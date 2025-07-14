@@ -23,7 +23,7 @@ const HistorySection = () => {
     useEffect(() => {
         const fetchUserHistory = async () => {
             // if (isAuthenticated) {
-            //     const url = `http://localhost:8081/api/histories/search/findBooksByUserEmail?userEmail=${user?.email}&page=${currentPage - 1}&size=5`;
+            //     const url = `${import.meta.env.VITE_REACT_API_APP}/histories/search/findBooksByUserEmail?userEmail=${user?.email}&page=${currentPage - 1}&size=5`;
             //     const requestOptions = {
             //         method: 'GET',
             //         headers: {
@@ -39,7 +39,7 @@ const HistorySection = () => {
             //     setHistories(historyResponseJson._embedded.histories);
             //     setTotalPages(historyResponseJson.page.totalPages);
             // }
-            const url = `http://localhost:8081/api/histories/search/findBooksByUserEmail?userEmail=${dummyUserEmail}&page=${currentPage - 1}&size=5`;
+            const url = `${import.meta.env.VITE_REACT_API_APP}/histories/search/findBooksByUserEmail?userEmail=${dummyUserEmail}&page=${currentPage - 1}&size=5`;
             const requestOptions = {
                 method: 'GET',
                 headers: {

@@ -15,7 +15,7 @@ const Carousel = () => {
         // Initialize the fetching books function
         const fetchBooks = async () => {
 
-            const baseUrl = "http://localhost:8081/api/books";
+            const baseUrl = `${import.meta.env.VITE_REACT_API_APP}/books`;
             const url = `${baseUrl}?page=0&size=9`;
             const response = await fetch(url);
 

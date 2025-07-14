@@ -41,7 +41,7 @@ const AddNewBook = () => {
     }
 
     async function submitNewBook() {
-        const url = `http://localhost:8081/api/admin/secure/add/book`;
+        const url = `${import.meta.env.VITE_REACT_API_APP}/admin/secure/add/book`;
         // const accessToken = await getAccessTokenSilently();
         if (title !== '' && author !== '' && category !== 'Category' && description !== '' && copies >= 0) { // if (isAuthenticated 
             const book: AddBookRequestModel = new AddBookRequestModel(title, author, description, copies, category);

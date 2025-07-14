@@ -25,7 +25,7 @@ const Messages = () => {
         const fetchUserMessages = async () => {
             // if (isAuthenticated) {
             //     const accessToken = await getAccessTokenSilently();
-            //     const url = `http://localhost:8081/api/messages/search/findByUserEmail?userEmail=${user?.email}&page=${currentPage - 1}&size=${messagesPerPage}`;
+            //     const url = `${import.meta.env.VITE_REACT_API_APP}/messages/search/findByUserEmail?userEmail=${user?.email}&page=${currentPage - 1}&size=${messagesPerPage}`;
             //     const requestOptions = {
             //         method: 'GET',
             //         headers: {
@@ -42,7 +42,7 @@ const Messages = () => {
             //     setTotalPages(messagesResponseJson.page.totalPages);
             // }
             // const accessToken = await getAccessTokenSilently();
-            const url = `http://localhost:8081/api/messages/search/findByUserEmail?userEmail=${dummyUserEmail}&page=${currentPage - 1}&size=${messagesPerPage}`;
+            const url = `${import.meta.env.VITE_REACT_API_APP}/messages/search/findByUserEmail?userEmail=${dummyUserEmail}&page=${currentPage - 1}&size=${messagesPerPage}`;
             const requestOptions = {
                 method: 'GET',
                 headers: {

@@ -12,7 +12,7 @@ const PostNewMessage = () => {
     const [displaySuccess, setDisplaySuccess] = useState(false);
 
     async function submitNewQuestion() {
-        const url = `http://localhost:8081/api/messages/secure/add/message`;
+        const url = `${import.meta.env.VITE_REACT_API_APP}/messages/secure/add/message`;
         // const accessToken = await getAccessTokenSilently();
         if (title !== '' && question !== '') { // if (isAuthenticated && title !== '' && question !== '') {
             const messageRequestModel: MessageModel = new MessageModel(title, question);

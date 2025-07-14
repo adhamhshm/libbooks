@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@CrossOrigin("https://localhost:5173")
+@CrossOrigin("httpss://localhost:5173")
 @RestController
 @RequestMapping("/api/books")
 public class BookController {

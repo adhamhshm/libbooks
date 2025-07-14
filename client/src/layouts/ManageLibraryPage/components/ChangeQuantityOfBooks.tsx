@@ -17,7 +17,7 @@ const ChangeQuantityOfBooks = () => {
 
     useEffect(() => {
         const fetchBooks = async () => {
-            const baseUrl: string = `http://localhost:8081/api/books?page=${currentPage - 1}&size=${booksPerPage}`;
+            const baseUrl: string = `${import.meta.env.VITE_REACT_API_APP}/books?page=${currentPage - 1}&size=${booksPerPage}`;
 
             const response = await fetch(baseUrl);
 
