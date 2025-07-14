@@ -1,5 +1,6 @@
 import { useState } from "react";
 import Loans from "./components/Loans";
+import HistorySection from "./components/HistorySection";
 
 const ShelfPage = () => {
 
@@ -53,8 +54,7 @@ const ShelfPage = () => {
                         role='tabpanel'
                         aria-labelledby='nav-history-tab'
                     >
-                        {/* {historyClick ? <HistoryPage/> : <></>} */}
-                        History
+                        {historyClick ? <HistorySection/> : <></>}
                     </div>
                 </div>
             </div>
@@ -62,4 +62,4 @@ const ShelfPage = () => {
     );
 }
 
-export default ShelfPage
+export default ShelfPage;
