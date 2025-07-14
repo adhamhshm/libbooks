@@ -9,6 +9,7 @@ import LoginPage from './auth/LoginPage'
 import { Auth0Provider, withAuthenticationRequired } from '@auth0/auth0-react';
 import ReviewListPage from './layouts/ReviewListPage/ReviewListPage'
 import ShelfPage from './layouts/ShelfPage/ShelfPage'
+import MessagesPage from './layouts/MessagesPage/MessagesPage'
 
 const App = () => {
 
@@ -22,6 +23,7 @@ const App = () => {
                 <Route path='/search' element={<SearchBooksPage />} />
                 <Route path='/checkout/:bookId' element={<BookCheckoutPage />} />
                 <Route path='/reviewlist/:bookId' element={<ReviewListPage />} />
+                <Route path='/messages' element={<MessagesPage />} />
                 <Route path='/shelf' element={<ShelfPage />} />
                 <Route path='/login' element={<LoginPage />} />
             </Routes>
