@@ -1,6 +1,29 @@
-import { Link, NavLink } from "react-router-dom";
+import { useAuth0 } from "@auth0/auth0-react";
+import { useEffect, useState } from "react";
+import { NavLink } from "react-router-dom";
 
 const Navbar = () => {
+
+
+    const { isAuthenticated, loginWithRedirect: login, logout: auth0Logout, getIdTokenClaims } = useAuth0();
+    const [roles, setRoles] = useState<string[] | null>(null); 
+    
+    useEffect(() => {
+        const fetchRoles = async () => {
+            const claims = await getIdTokenClaims();
+            const fetchedRoles = claims?.[`${import.meta.env.VITE_AUTH0_POST_LOGIN_ACTION_API}`] || [];
+            setRoles(fetchedRoles);
+        };
+
+        fetchRoles();
+    }, [isAuthenticated, getIdTokenClaims]);
+
+    const signin = () =>
+        login({ authorizationParams: { screen_hint: "login" } });
+
+    const logout = () =>
+        auth0Logout({ logoutParams: { returnTo: window.location.origin } });
+
     return (
         <nav className='navbar navbar-expand-lg navbar-dark main-color py-3'>
             <div className='container-fluid'>
@@ -20,27 +43,27 @@ const Navbar = () => {
                         <li className='nav-item'>
                             <NavLink className='nav-link' to='/search'>Search</NavLink>
                         </li>
-                        {/* {isAuthenticated && */}
+                        {isAuthenticated &&
                             <li className='nav-item'>
                                 <NavLink className='nav-link' to='/shelf'>Shelf</NavLink>
                             </li>
-                        {/* } */}
-                        {/* {isAuthenticated && roles?.includes('admin') && */}
+                        } 
+                        {isAuthenticated && roles?.includes(`${import.meta.env.VITE_ROLE_ADMIN}`) &&
                             <li className='nav-item'>
                                 <NavLink className='nav-link' to='/admin'>Admin</NavLink>
                             </li>
-                        {/* } */}
+                        }
                     </ul>
                     <ul className='navbar-nav ms-auto'>
-                        {/* {!isAuthenticated ? */}
+                        {!isAuthenticated ?
                             <li className='nav-item m-1'>
-                                <Link type='button' className='btn btn-outline-light' to='/login'>Sign in</Link>
+                                <button type='button' className='btn btn-outline-light' onClick={signin}>Sign in</button>
                             </li>
-                            {/* :
+                            :
                             <li>
-                                <button className='btn btn-outline-light' onClick={handleLogout}>Logout</button>
+                                <button className='btn btn-outline-light' onClick={logout}>Logout</button>
                             </li>
-                        } */}
+                        }
                     </ul>
                 </div>
             </div>
