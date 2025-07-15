@@ -23,8 +23,3 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
-
-# SSL / HTTPS certs
-cert/
-*.pem
-*.key
