@@ -5,7 +5,7 @@ import AddBookRequestModel from '../../../models/AddBookRequestModel';
 const AddNewBook = () => {
 
 
-    // const { isAuthenticated, getAccessTokenSilently } = useAuth0();
+    const { isAuthenticated, getAccessTokenSilently } = useAuth0();
 
     // New Book
     const [title, setTitle] = useState('');
@@ -23,12 +23,14 @@ const AddNewBook = () => {
         setCategory(value);
     }
 
+    // Convert image to base64
     async function base64ConversionForImages(e: any) {
         if (e.target.files[0]) {
             getBase64(e.target.files[0]);
         }
     }
 
+    // Convert file to base64
     function getBase64(file: any) {
         let reader = new FileReader();
         reader.readAsDataURL(file);
@@ -40,16 +42,17 @@ const AddNewBook = () => {
         }
     }
 
+    // Function to submit a new book
     async function submitNewBook() {
         const url = `${import.meta.env.VITE_REACT_API_APP}/admin/secure/add/book`;
-        // const accessToken = await getAccessTokenSilently();
-        if (title !== '' && author !== '' && category !== 'Category' && description !== '' && copies >= 0) { // if (isAuthenticated 
+        const accessToken = await getAccessTokenSilently();
+        if (isAuthenticated && title !== '' && author !== '' && category !== 'Category' && description !== '' && copies >= 0) { 
             const book: AddBookRequestModel = new AddBookRequestModel(title, author, description, copies, category);
             book.img = selectedImage;
             const requestOptions = {
                 method: 'POST',
                 headers: {
-                    // Authorization: `Bearer ${accessToken}`,
+                    Authorization: `Bearer ${accessToken}`,
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify(book)

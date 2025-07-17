@@ -10,7 +10,7 @@ import ReviewRequestModel from "../../models/ReviewRequestModel";
 
 const BookCheckoutPage = () => {
 
-    // const { isAuthenticated, getAccessTokenSilently } = useAuth0();
+    const { isAuthenticated, getAccessTokenSilently } = useAuth0();
 
     const [book, setBook] = useState<BookModel>();
     const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -32,10 +32,11 @@ const BookCheckoutPage = () => {
     const [isCheckedOut, setIsCheckedOut] = useState(false);
     const [isLoadingBookCheckedOut, setIsLoadingBookCheckedOut] = useState(true);
 
+    // Get Book Id from the URL
     const bookId = (window.location.pathname).split('/')[2];
 
+    // Fetch Book Details
     useEffect(() => {
-
         // Initialize the fetching books function
         const fetchBook = async () => {
 
@@ -43,7 +44,7 @@ const BookCheckoutPage = () => {
             const response = await fetch(url);
 
             if (!response.ok) {
-                throw new Error('Something went wrong while fetching the book.');
+                throw new Error('Something went wrong. Unable to fetch the book.');
             };
 
             const responseJson = await response.json();
@@ -70,8 +71,9 @@ const BookCheckoutPage = () => {
             setIsLoading(false);
         });
 
-    }, [isCheckedOut, bookId]);  // getAccessTokenSilently,
+    }, [isCheckedOut, bookId, getAccessTokenSilently]);
 
+    // Fetch Book Reviews
     useEffect(() => {
         const fetchBookReviews = async () => {
             const reviewUrl: string = `${import.meta.env.VITE_REACT_API_APP}/reviews/search/findByBookId?bookId=${bookId}`;
@@ -117,135 +119,93 @@ const BookCheckoutPage = () => {
         });
     }, [isReviewLeft, bookId]);
 
+    // Fetch User Review
     useEffect(() => {
         const fetchUserReviewBook = async () => {
-            // if (isAuthenticated) {
-            //     // const url = `http://localhost:8080/api/reviews/secure/user/book/?bookId=${bookId}`;
-            //     const accessToken = await getAccessTokenSilently();
-            //     const url = `http://localhost:8080/api/reviews/secure/user/book?bookId=${bookId}`;
+            if (isAuthenticated) {
+                // const url = `http://localhost:8080/api/reviews/secure/user/book/?bookId=${bookId}`;
+                const accessToken = await getAccessTokenSilently();
+                const url = `http://localhost:8080/api/reviews/secure/user/book?bookId=${bookId}`;
 
-            //     const requestOptions = {
-            //         method: 'GET',
-            //         headers: {
-            //             Authorization: `Bearer ${accessToken}`,
-            //             'Content-Type': 'application/json'
-            //         }
-            //     };
-            //     const userReview = await fetch(url, requestOptions);
-            //     if (!userReview.ok) {
-            //         throw new Error('Something went wrong');
-            //     }
-            //     const userReviewResponseJson = await userReview.json();
-            //     setIsReviewLeft(userReviewResponseJson);
-            // }
-            const url = `${import.meta.env.VITE_REACT_API_APP}/reviews/secure/user/book?bookId=${bookId}`;
-            const requestOptions = {
-                method: 'GET',
-                headers: {
-                    //Authorization: `Bearer ${accessToken}`,
-                    'Content-Type': 'application/json'
+                const requestOptions = {
+                    method: 'GET',
+                    headers: {
+                        Authorization: `Bearer ${accessToken}`,
+                        'Content-Type': 'application/json'
+                    }
+                };
+                const userReview = await fetch(url, requestOptions);
+                if (!userReview.ok) {
+                    throw new Error('Something went wrong');
                 }
-            };
-            const userReview = await fetch(url, requestOptions);
-            if (!userReview.ok) {
-                throw new Error('Something went wrong');
+                const userReviewResponseJson = await userReview.json();
+                setIsReviewLeft(userReviewResponseJson);
             }
-            const userReviewResponseJson = await userReview.json();
-            setIsReviewLeft(userReviewResponseJson);
             setIsLoadingUserReview(false);
         }
         fetchUserReviewBook().catch((error: any) => {
             setIsLoadingUserReview(false);
             setHttpError(error.message);
         })
-    }, [bookId]); // isAuthenticated, getAccessTokenSilently
+    }, [bookId, isAuthenticated, getAccessTokenSilently]);
 
     useEffect(() => {
         const fetchUserCurrentLoansCount = async () => {
-            // if (isAuthenticated) {
-            //     const accessToken = await getAccessTokenSilently();
-            //     const url = `${import.meta.env.VITE_REACT_API_APP}/books/secure/currentloans/count`;
-            //     const requestOptions = {
-            //         method: 'GET',
-            //         headers: { 
-            //             Authorization: `Bearer ${accessToken}`,
-            //             'Content-Type': 'application/json'
-            //          }
-            //     };
-            //     const currentLoansCountResponse = await fetch(url, requestOptions);
-            //     if (!currentLoansCountResponse.ok)  {
-            //         throw new Error('Something went wrong. Unable to fetch current loans count.');
-            //     }
-            //     const currentLoansCountResponseJson = await currentLoansCountResponse.json();
-            //     setCurrentLoansCount(currentLoansCountResponseJson);
-            // }
-            const url = `${import.meta.env.VITE_REACT_API_APP}/books/secure/currentloans/count`;
-            const requestOptions = {
-                method: 'GET',
-                headers: { 
-                    //Authorization: `Bearer ${accessToken}`,
-                    'Content-Type': 'application/json'
-                    }
-            };
-            const currentLoansCountResponse = await fetch(url, requestOptions);
-            if (!currentLoansCountResponse.ok)  {
-                throw new Error('Something went wrong. Unable to fetch current loans count.');
+            if (isAuthenticated) {
+                const accessToken = await getAccessTokenSilently();
+                const url = `${import.meta.env.VITE_REACT_API_APP}/books/secure/currentloans/count`;
+                const requestOptions = {
+                    method: 'GET',
+                    headers: { 
+                        Authorization: `Bearer ${accessToken}`,
+                        'Content-Type': 'application/json'
+                     }
+                };
+                const currentLoansCountResponse = await fetch(url, requestOptions);
+                if (!currentLoansCountResponse.ok)  {
+                    throw new Error('Something went wrong. Unable to fetch current loans count.');
+                }
+                const currentLoansCountResponseJson = await currentLoansCountResponse.json();
+                setCurrentLoansCount(currentLoansCountResponseJson);
             }
-            const currentLoansCountResponseJson = await currentLoansCountResponse.json();
-            setCurrentLoansCount(currentLoansCountResponseJson);
             setIsLoadingCurrentLoansCount(false);
         }
         fetchUserCurrentLoansCount().catch((error: any) => {
             setIsLoadingCurrentLoansCount(false);
             setHttpError(error.message);
         })
-    }, [isCheckedOut]); // isAuthenticated, getAccessTokenSilently, 
+    }, [isCheckedOut, isAuthenticated, getAccessTokenSilently]);
 
+    // Check if user has checked out the book
     useEffect(() => {
         const checkIsUserCheckedOutBook = async () => {
-            // if (isAuthenticated) {
-            //     const accessToken = await getAccessTokenSilently();
-            //     const url = `${import.meta.env.VITE_REACT_API_APP}/books/secure/ischeckedout/byuser?bookId=${bookId}`;
+            if (isAuthenticated) {
+                const accessToken = await getAccessTokenSilently();
+                const url = `${import.meta.env.VITE_REACT_API_APP}/books/secure/ischeckedout/byuser?bookId=${bookId}`;
 
-            //     const requestOptions = {
-            //         method: 'GET',
-            //         headers: {
-            //             Authorization: `Bearer ${accessToken}`,
-            //             'Content-Type': 'application/json'
-            //         }
-            //     };
-            //     const bookCheckedOut = await fetch(url, requestOptions);
+                const requestOptions = {
+                    method: 'GET',
+                    headers: {
+                        Authorization: `Bearer ${accessToken}`,
+                        'Content-Type': 'application/json'
+                    }
+                };
+                const bookCheckedOut = await fetch(url, requestOptions);
 
-            //     if (!bookCheckedOut.ok) {
-            //         throw new Error('Something went wrong!');
-            //     }
-
-            //     const bookCheckedOutResponseJson = await bookCheckedOut.json();
-            //     setIsCheckedOut(bookCheckedOutResponseJson);
-            // }
-            const url = `${import.meta.env.VITE_REACT_API_APP}/books/secure/ischeckedout/byuser?bookId=${bookId}`;
-            const requestOptions = {
-                method: 'GET',
-                headers: {
-                    //Authorization: `Bearer ${accessToken}`,
-                    'Content-Type': 'application/json'
+                if (!bookCheckedOut.ok) {
+                    throw new Error('Something went wrong!');
                 }
-            };
-            const bookCheckedOut = await fetch(url, requestOptions);
 
-            if (!bookCheckedOut.ok) {
-                throw new Error('Something went wrong!');
+                const bookCheckedOutResponseJson = await bookCheckedOut.json();
+                setIsCheckedOut(bookCheckedOutResponseJson);
             }
-
-            const bookCheckedOutResponseJson = await bookCheckedOut.json();
-            setIsCheckedOut(bookCheckedOutResponseJson);
             setIsLoadingBookCheckedOut(false);
         }
         checkIsUserCheckedOutBook().catch((error: any) => {
             setIsLoadingBookCheckedOut(false);
             setHttpError(error.message);
         })
-    }, [bookId]); // isAuthenticated, getAccessTokenSilently
+    }, [bookId, isAuthenticated, getAccessTokenSilently]);
 
     // Handle loading state
     if (isLoading || isLoadingReview || isLoadingCurrentLoansCount || isLoadingBookCheckedOut || isLoadingUserReview) {
@@ -263,15 +223,16 @@ const BookCheckoutPage = () => {
         )
     }
 
+    // Function to handle book checkout
     async function checkoutBook() {
         // const url = `http://localhost:8080/api/books/secure/checkout/?bookId=${book?.id}`;
-        // const accessToken = await getAccessTokenSilently();
+        const accessToken = await getAccessTokenSilently();
         const url = `${import.meta.env.VITE_REACT_API_APP}/books/secure/checkout?bookId=${book?.id}`;
 
         const requestOptions = {
             method: 'PUT',
             headers: {
-                //Authorization: `Bearer ${accessToken}`,
+                Authorization: `Bearer ${accessToken}`,
                 'Content-Type': 'application/json'
             }
         };
@@ -282,6 +243,7 @@ const BookCheckoutPage = () => {
         setIsCheckedOut(true);
     }
 
+    // Function to submit review
     async function submitReview(starInput: number, reviewDescription: string) {
         let bookId: number = 0;
         if (book?.id) {
@@ -290,11 +252,11 @@ const BookCheckoutPage = () => {
 
         const reviewRequestModel = new ReviewRequestModel(starInput, bookId, reviewDescription);
         const url = `${import.meta.env.VITE_REACT_API_APP}/reviews/secure`;
-        //const accessToken = await getAccessTokenSilently();
+        const accessToken = await getAccessTokenSilently();
         const requestOptions = {
             method: 'POST',
             headers: {
-                //Authorization: `Bearer ${accessToken}`,
+                Authorization: `Bearer ${accessToken}`,
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(reviewRequestModel)
@@ -338,7 +300,7 @@ const BookCheckoutPage = () => {
                         book={book} 
                         mobile={false} 
                         currentLoansCount={currentLoansCount} 
-                        // isAuthenticated={isAuthenticated} 
+                        isAuthenticated={isAuthenticated} 
                         isCheckedOut={isCheckedOut} 
                         checkoutBook={checkoutBook} 
                         isReviewLeft={isReviewLeft} 
@@ -377,7 +339,7 @@ const BookCheckoutPage = () => {
                     book={book} 
                     mobile={true} 
                     currentLoansCount={currentLoansCount} 
-                    // isAuthenticated={isAuthenticated} 
+                    isAuthenticated={isAuthenticated} 
                     isCheckedOut={isCheckedOut} 
                     checkoutBook={checkoutBook} 
                     isReviewLeft={isReviewLeft} 

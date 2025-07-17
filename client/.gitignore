@@ -13,6 +13,10 @@ dist-ssr
 *.local
 .env
 
+# SSL cert
+/cert/*.pem
+/cert/*.key
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

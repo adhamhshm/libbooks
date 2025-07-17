@@ -5,6 +5,7 @@ import Pagination from "../../Utils/Pagination";
 import ChangeQuantityOfBook from "./ChangeQuantityOfBook";
 
 const ChangeQuantityOfBooks = () => {
+    
     const [books, setBooks] = useState<BookModel[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [httpError, setHttpError] = useState(null);
@@ -54,11 +55,11 @@ const ChangeQuantityOfBooks = () => {
             setIsLoading(false);
             setHttpError(error.message);
         })
-    }, [currentPage, bookDelete]);
+    }, [currentPage, bookDelete, booksPerPage]);
 
     const indexOfLastBook: number = currentPage * booksPerPage;
     const indexOfFirstBook: number = indexOfLastBook - booksPerPage;
-    let lastItem = booksPerPage * currentPage <= totalAmountOfBooks ? booksPerPage * currentPage : totalAmountOfBooks;
+    const lastItem = booksPerPage * currentPage <= totalAmountOfBooks ? booksPerPage * currentPage : totalAmountOfBooks;
 
     const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
 

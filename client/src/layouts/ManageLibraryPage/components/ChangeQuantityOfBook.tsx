@@ -5,7 +5,7 @@ import type BookModel from "../../../models/BookModel";
 
 const ChangeQuantityOfBook: React.FC<{ book: BookModel, deleteBook: any }> = (props) => {
     
-    // const { getAccessTokenSilently } = useAuth0();
+    const { getAccessTokenSilently } = useAuth0();
     const [quantity, setQuantity] = useState<number>(0);
     const [remaining, setRemaining] = useState<number>(0);
 
@@ -17,13 +17,20 @@ const ChangeQuantityOfBook: React.FC<{ book: BookModel, deleteBook: any }> = (pr
         fetchBookInState();
     }, []);
 
+    // useEffect(() => {
+    //     if (props.book) {
+    //         setQuantity(props.book.copies ?? 0);
+    //         setRemaining(props.book.copiesAvailable ?? 0);
+    //     }
+    // }, [props.book]);
+
     async function increaseQuantity() {
         const url = `${import.meta.env.VITE_REACT_API_APP}/admin/secure/increase/book/quantity?bookId=${props.book?.id}`;
-        // const accessToken = await getAccessTokenSilently();
+        const accessToken = await getAccessTokenSilently();
         const requestOptions = {
             method: 'PUT',
             headers: {
-                // Authorization: `Bearer ${accessToken}`,
+                Authorization: `Bearer ${accessToken}`,
                 'Content-Type': 'application/json'
             }
         };
@@ -38,11 +45,11 @@ const ChangeQuantityOfBook: React.FC<{ book: BookModel, deleteBook: any }> = (pr
 
     async function decreaseQuantity() {
         const url = `${import.meta.env.VITE_REACT_API_APP}/admin/secure/decrease/book/quantity?bookId=${props.book?.id}`;
-        // const accessToken = await getAccessTokenSilently();
+        const accessToken = await getAccessTokenSilently();
         const requestOptions = {
             method: 'PUT',
             headers: {
-                // Authorization: `Bearer ${accessToken}`,
+                Authorization: `Bearer ${accessToken}`,
                 'Content-Type': 'application/json'
             }
         };
@@ -57,11 +64,11 @@ const ChangeQuantityOfBook: React.FC<{ book: BookModel, deleteBook: any }> = (pr
 
     async function deleteBook() {
         const url = `${import.meta.env.VITE_REACT_API_APP}/admin/secure/delete/book?bookId=${props.book?.id}`;
-        // const accessToken = await getAccessTokenSilently();
+        const accessToken = await getAccessTokenSilently();
         const requestOptions = {
             method: 'DELETE',
             headers: {
-                // Authorization: `Bearer ${accessToken}`,
+                Authorization: `Bearer ${accessToken}`,
                 'Content-Type': 'application/json'
             }
         };

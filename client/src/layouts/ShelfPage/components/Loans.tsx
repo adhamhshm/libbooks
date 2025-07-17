@@ -6,7 +6,7 @@ import LoansModal from "./LoansModal";
 
 const Loans = () => {
 
-    // const { isAuthenticated, getAccessTokenSilently} = useAuth0();
+    const { isAuthenticated, getAccessTokenSilently} = useAuth0();
     const [httpError, setHttpError] = useState(null);
 
     // Current Loans
@@ -16,37 +16,23 @@ const Loans = () => {
 
     useEffect(() => {
         const fetchUserCurrentLoans = async () => {
-            // if (isAuthenticated) {
-            //     const accessToken = await getAccessTokenSilently();
-            //     const url = `${import.meta.env.VITE_REACT_API_APP}/books/secure/currentloans`;
-            //     const requestOptions = {
-            //         method: 'GET',
-            //         headers: {
-            //             Authorization: `Bearer ${accessToken}`,
-            //             'Content-Type': 'application/json'
-            //         }
-            //     };
-            //     const shelfCurrentLoansResponse = await fetch(url, requestOptions);
-            //     if (!shelfCurrentLoansResponse.ok) {
-            //         throw new Error('Something went wrong!');
-            //     }
-            //     const shelfCurrentLoansResponseJson = await shelfCurrentLoansResponse.json();
-            //     setShelfCurrentLoans(shelfCurrentLoansResponseJson);
-            // }
-            const url = `${import.meta.env.VITE_REACT_API_APP}/books/secure/currentloans`;
-            const requestOptions = {
-                method: 'GET',
-                headers: {
-                    //Authorization: `Bearer ${accessToken}`,
-                    'Content-Type': 'application/json'
+            if (isAuthenticated) {
+                const accessToken = await getAccessTokenSilently();
+                const url = `${import.meta.env.VITE_REACT_API_APP}/books/secure/currentloans`;
+                const requestOptions = {
+                    method: 'GET',
+                    headers: {
+                        Authorization: `Bearer ${accessToken}`,
+                        'Content-Type': 'application/json'
+                    }
+                };
+                const shelfCurrentLoansResponse = await fetch(url, requestOptions);
+                if (!shelfCurrentLoansResponse.ok) {
+                    throw new Error('Something went wrong!');
                 }
-            };
-            const shelfCurrentLoansResponse = await fetch(url, requestOptions);
-            if (!shelfCurrentLoansResponse.ok) {
-                throw new Error('Something went wrong!');
+                const shelfCurrentLoansResponseJson = await shelfCurrentLoansResponse.json();
+                setShelfCurrentLoans(shelfCurrentLoansResponseJson);
             }
-            const shelfCurrentLoansResponseJson = await shelfCurrentLoansResponse.json();
-            setShelfCurrentLoans(shelfCurrentLoansResponseJson);
             setIsLoadingUserLoans(false);
         }
         fetchUserCurrentLoans().catch((error: any) => {

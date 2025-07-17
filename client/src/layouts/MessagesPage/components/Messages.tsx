@@ -6,7 +6,7 @@ import Pagination from "../../Utils/Pagination";
 
 const Messages = () => {
 
-    // const { isAuthenticated, user, getAccessTokenSilently } = useAuth0();
+    const { isAuthenticated, user, getAccessTokenSilently } = useAuth0();
     const [isLoadingMessages, setIsLoadingMessages] = useState(true);
     const [httpError, setHttpError] = useState(null);
 
@@ -19,44 +19,28 @@ const Messages = () => {
     const [totalPages, setTotalPages] = useState(0);
 
     // Dummy user email
-    const dummyUserEmail = 'hehe@hehe.com';
+    // const dummyUserEmail = 'hehe@hehe.com';
 
     useEffect(() => {
         const fetchUserMessages = async () => {
-            // if (isAuthenticated) {
-            //     const accessToken = await getAccessTokenSilently();
-            //     const url = `${import.meta.env.VITE_REACT_API_APP}/messages/search/findByUserEmail?userEmail=${user?.email}&page=${currentPage - 1}&size=${messagesPerPage}`;
-            //     const requestOptions = {
-            //         method: 'GET',
-            //         headers: {
-            //             Authorization: `Bearer ${accessToken}`,
-            //             'Content-Type': 'application/json'
-            //         }
-            //     };
-            //     const messagesResponse = await fetch(url, requestOptions);
-            //     if (!messagesResponse.ok) {
-            //         throw new Error('Something went wrong!');
-            //     }
-            //     const messagesResponseJson = await messagesResponse.json();
-            //     setMessages(messagesResponseJson._embedded.messages);
-            //     setTotalPages(messagesResponseJson.page.totalPages);
-            // }
-            // const accessToken = await getAccessTokenSilently();
-            const url = `${import.meta.env.VITE_REACT_API_APP}/messages/search/findByUserEmail?userEmail=${dummyUserEmail}&page=${currentPage - 1}&size=${messagesPerPage}`;
-            const requestOptions = {
-                method: 'GET',
-                headers: {
-                    // Authorization: `Bearer ${accessToken}`,
-                    'Content-Type': 'application/json'
+            if (isAuthenticated) {
+                const accessToken = await getAccessTokenSilently();
+                const url = `${import.meta.env.VITE_REACT_API_APP}/messages/search/findByUserEmail?userEmail=${user?.email}&page=${currentPage - 1}&size=${messagesPerPage}`;
+                const requestOptions = {
+                    method: 'GET',
+                    headers: {
+                        Authorization: `Bearer ${accessToken}`,
+                        'Content-Type': 'application/json'
+                    }
+                };
+                const messagesResponse = await fetch(url, requestOptions);
+                if (!messagesResponse.ok) {
+                    throw new Error('Something went wrong!');
                 }
-            };
-            const messagesResponse = await fetch(url, requestOptions);
-            if (!messagesResponse.ok) {
-                throw new Error('Something went wrong!');
+                const messagesResponseJson = await messagesResponse.json();
+                setMessages(messagesResponseJson._embedded.messages);
+                setTotalPages(messagesResponseJson.page.totalPages);
             }
-            const messagesResponseJson = await messagesResponse.json();
-            setMessages(messagesResponseJson._embedded.messages);
-            setTotalPages(messagesResponseJson.page.totalPages);
             setIsLoadingMessages(false);
         } 
         fetchUserMessages().catch((error: any) => {

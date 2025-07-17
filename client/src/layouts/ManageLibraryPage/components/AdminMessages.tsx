@@ -8,7 +8,8 @@ import AdminMessage from "./AdminMessage";
 
 
 const AdminMessages = () => {
-    // const { isAuthenticated, getAccessTokenSilently } = useAuth0();
+
+    const { isAuthenticated, getAccessTokenSilently } = useAuth0();
 
     // Normal Loading Pieces
     const [isLoadingMessages, setIsLoadingMessages] = useState(true);
@@ -27,42 +28,25 @@ const AdminMessages = () => {
 
     useEffect(() => {
         const fetchUserMessages = async () => {
-            // if (isAuthenticated) {
-            //     const accessToken = await getAccessTokenSilently();
-            //     const url = `${import.meta.env.VITE_REACT_API_APP}/messages/search/findByClosed?closed=false&page=${currentPage - 1}&size=${messagesPerPage}`;
-            //     const requestOptions = {
-            //         method: 'GET',
-            //         headers: {
-            //             Authorization: `Bearer ${accessToken}`,
-            //             'Content-Type': 'application/json'
-            //         }
-            //     };
-            //     const messagesResponse = await fetch(url, requestOptions);
-            //     if (!messagesResponse.ok) {
-            //         throw new Error('Something went wrong!');
-            //     }
-            //     const messagesResponseJson = await messagesResponse.json();
-
-            //     setMessages(messagesResponseJson._embedded.messages);
-            //     setTotalPages(messagesResponseJson.page.totalPages);
-            // }
-
-            const url = `${import.meta.env.VITE_REACT_API_APP}/messages/search/findByClosed?closed=false&page=${currentPage - 1}&size=${messagesPerPage}`;
-            const requestOptions = {
-                method: 'GET',
-                headers: {
-                    // Authorization: `Bearer ${accessToken}`,
-                    'Content-Type': 'application/json'
+            if (isAuthenticated) {
+                const accessToken = await getAccessTokenSilently();
+                const url = `${import.meta.env.VITE_REACT_API_APP}/messages/search/findByClosed?closed=false&page=${currentPage - 1}&size=${messagesPerPage}`;
+                const requestOptions = {
+                    method: 'GET',
+                    headers: {
+                        Authorization: `Bearer ${accessToken}`,
+                        'Content-Type': 'application/json'
+                    }
+                };
+                const messagesResponse = await fetch(url, requestOptions);
+                if (!messagesResponse.ok) {
+                    throw new Error('Something went wrong!');
                 }
-            };
-            const messagesResponse = await fetch(url, requestOptions);
-            if (!messagesResponse.ok) {
-                throw new Error('Something went wrong. Unable to fetch closed messages.');
-            }
-            const messagesResponseJson = await messagesResponse.json();
+                const messagesResponseJson = await messagesResponse.json();
 
-            setMessages(messagesResponseJson._embedded.messages);
-            setTotalPages(messagesResponseJson.page.totalPages);
+                setMessages(messagesResponseJson._embedded.messages);
+                setTotalPages(messagesResponseJson.page.totalPages);
+            }
             setIsLoadingMessages(false);
         }
         fetchUserMessages().catch((error: any) => {
@@ -70,7 +54,7 @@ const AdminMessages = () => {
             setHttpError(error.message);
         })
         window.scrollTo(0, 0);
-    }, [currentPage, btnSubmit]); // isAuthenticated, getAccessTokenSilently, 
+    }, [isAuthenticated, getAccessTokenSilently, currentPage, btnSubmit, messagesPerPage]);
 
     if (isLoadingMessages) {
         return (
@@ -89,13 +73,13 @@ const AdminMessages = () => {
 
     async function submitResponseToQuestion(id: number, response: string) {
         const url = `${import.meta.env.VITE_REACT_API_APP}/messages/secure/admin/message`;
-        // const accessToken = await getAccessTokenSilently();
+        const accessToken = await getAccessTokenSilently();
         if (id !== null && response !== '') { // isAuthenticated &&
             const messageAdminRequestModel: AdminMessageRequestModel = new AdminMessageRequestModel(id, response);
             const requestOptions = {
                 method: 'PUT',
                 headers: {
-                    // Authorization: `Bearer ${accessToken}`,
+                    Authorization: `Bearer ${accessToken}`,
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify(messageAdminRequestModel)

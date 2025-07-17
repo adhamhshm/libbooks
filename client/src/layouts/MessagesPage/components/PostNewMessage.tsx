@@ -5,7 +5,7 @@ import MessageModel from "../../../models/MessageModel";
 
 const PostNewMessage = () => {
     
-    // const { isAuthenticated, getAccessTokenSilently } = useAuth0();
+    const { isAuthenticated, getAccessTokenSilently } = useAuth0();
     const [title, setTitle] = useState('');
     const [question, setQuestion] = useState('');
     const [displayWarning, setDisplayWarning] = useState(false);
@@ -13,13 +13,13 @@ const PostNewMessage = () => {
 
     async function submitNewQuestion() {
         const url = `${import.meta.env.VITE_REACT_API_APP}/messages/secure/add/message`;
-        // const accessToken = await getAccessTokenSilently();
-        if (title !== '' && question !== '') { // if (isAuthenticated && title !== '' && question !== '') {
+        const accessToken = await getAccessTokenSilently();
+        if (isAuthenticated && title !== '' && question !== '') {
             const messageRequestModel: MessageModel = new MessageModel(title, question);
             const requestOptions = {
                 method: 'POST',
                 headers: {
-                    // Authorization: `Bearer ${accessToken}`,
+                    Authorization: `Bearer ${accessToken}`,
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify(messageRequestModel)

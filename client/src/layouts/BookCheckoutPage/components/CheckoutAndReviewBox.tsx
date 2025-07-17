@@ -6,7 +6,7 @@ const CheckoutAndReviewBox: React.FC<{
     book: BookModel | undefined, 
     mobile: boolean, 
     currentLoansCount: number, 
-    // isAuthenticated: any, 
+    isAuthenticated: any, 
     isCheckedOut: boolean, 
     checkoutBook: any, 
     isReviewLeft: boolean, 
@@ -14,7 +14,7 @@ const CheckoutAndReviewBox: React.FC<{
 }> = (props) => {
 
     function buttonRender() {
-        // if (props.isAuthenticated) {
+        if (props.isAuthenticated) {
             if (!props.isCheckedOut && props.currentLoansCount < 5) {
                 return (<button onClick={() => props.checkoutBook()} className='btn btn-success btn-lg'>Checkout</button>)
             } else if (props.isCheckedOut) {
@@ -22,18 +22,19 @@ const CheckoutAndReviewBox: React.FC<{
             } else if (!props.isCheckedOut) {
                 return (<p className='text-danger'>Too many books checked out.</p>)
             }
-        // }
-        // return (<Link to={'/login'} className='btn btn-success btn-lg'>Sign in</Link>)
+        }
+        return (<Link to={'/login'} className='btn btn-success btn-lg'>Sign in</Link>)
     }
 
     function reviewRender() {
-        if (!props.isReviewLeft) { // props.isAuthenticated &&
+        if (props.isAuthenticated && !props.isReviewLeft) {
             return(
             <>
                 <LeaveAReview submitReview={props.submitReview}/>
             </>
             )
-        } else if (props.isReviewLeft) { // props.isAuthenticated &&
+        } 
+        else if (props.isAuthenticated && props.isReviewLeft) { 
             return(
             <p>
                 <b>Thank you for your review!</b>

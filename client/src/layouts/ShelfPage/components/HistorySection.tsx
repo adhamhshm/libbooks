@@ -6,7 +6,8 @@ import { Link } from "react-router-dom";
 import Pagination from "../../Utils/Pagination";
 
 const HistorySection = () => {
-    // const { isAuthenticated, user } = useAuth0();
+
+    const { isAuthenticated, user } = useAuth0();
     const [isLoadingHistory, setIsLoadingHistory] = useState(true);
     const [httpError, setHttpError] = useState(null);
 
@@ -18,42 +19,27 @@ const HistorySection = () => {
     const [totalPages, setTotalPages] = useState(0);
 
     // Dummy user email
-    const dummyUserEmail = 'hehe@hehe.com';
+    // const dummyUserEmail = 'hehe@hehe.com';
 
     useEffect(() => {
         const fetchUserHistory = async () => {
-            // if (isAuthenticated) {
-            //     const url = `${import.meta.env.VITE_REACT_API_APP}/histories/search/findBooksByUserEmail?userEmail=${user?.email}&page=${currentPage - 1}&size=5`;
-            //     const requestOptions = {
-            //         method: 'GET',
-            //         headers: {
-            //             'Content-Type': 'application/json'
-            //         }
-            //     };
-            //     const historyResponse = await fetch(url, requestOptions);
-            //     if (!historyResponse.ok) {
-            //         throw new Error('Something went wrong!');
-            //     }
-            //     const historyResponseJson = await historyResponse.json();
-
-            //     setHistories(historyResponseJson._embedded.histories);
-            //     setTotalPages(historyResponseJson.page.totalPages);
-            // }
-            const url = `${import.meta.env.VITE_REACT_API_APP}/histories/search/findBooksByUserEmail?userEmail=${dummyUserEmail}&page=${currentPage - 1}&size=5`;
-            const requestOptions = {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json'
+            if (isAuthenticated) {
+                const url = `${import.meta.env.VITE_REACT_API_APP}/histories/search/findBooksByUserEmail?userEmail=${user?.email}&page=${currentPage - 1}&size=5`;
+                const requestOptions = {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                };
+                const historyResponse = await fetch(url, requestOptions);
+                if (!historyResponse.ok) {
+                    throw new Error('Something went wrong!');
                 }
-            };
-            const historyResponse = await fetch(url, requestOptions);
-            if (!historyResponse.ok) {
-                throw new Error('Something went wrong. Unable to fetch history data.');
-            }
-            const historyResponseJson = await historyResponse.json();
+                const historyResponseJson = await historyResponse.json();
 
-            setHistories(historyResponseJson._embedded.histories);
-            setTotalPages(historyResponseJson.page.totalPages);
+                setHistories(historyResponseJson._embedded.histories);
+                setTotalPages(historyResponseJson.page.totalPages);
+            }
             setIsLoadingHistory(false);
 
         }

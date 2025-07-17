@@ -9,23 +9,23 @@ import AdminMessages from "./components/AdminMessages";
 
 const ManageLibraryPage = () => {
     
-    // const { getIdTokenClaims } = useAuth0();
+    const { getIdTokenClaims } = useAuth0();
     const [roles, setRoles] = useState<string[] | null>(null); // Set roles to null initially
     const [loading, setLoading] = useState(false); // Loading state to handle async data
 
     const [changeQuantityOfBooksClick, setChangeQuantityOfBooksClick] = useState(false);
     const [messagesClick, setMessagesClick] = useState(false);
 
-    // useEffect(() => {
-    //     const fetchRoles = async () => {
-    //         const claims = await getIdTokenClaims();
-    //         const fetchedRoles = claims?.['https://luv2code-react-library.com/roles'] || [];
-    //         setRoles(fetchedRoles);
-    //         setLoading(false); // Set loading to false once roles are loaded
-    //     };
+    useEffect(() => {
+        const fetchRoles = async () => {
+            const claims = await getIdTokenClaims();
+            const fetchedRoles = claims?.[`${import.meta.env.VITE_AUTH0_POST_LOGIN_ACTION_API}`] || [];
+            setRoles(fetchedRoles);
+            setLoading(false);
+        };
 
-    //     fetchRoles();
-    // }, [getIdTokenClaims]);
+        fetchRoles();
+    }, [getIdTokenClaims]);
     
 
     function addBookClickFunction() {
@@ -48,9 +48,9 @@ const ManageLibraryPage = () => {
         return (<SpinnerLoading />) 
     }
 
-    // if (!roles?.includes('admin')) {
-    //     return <Navigate to='/home'/>
-    // }
+    if (!roles?.includes('admin')) {
+        return <Navigate to='/home'/>
+    }
     
 
     return (
@@ -116,4 +116,4 @@ const ManageLibraryPage = () => {
     );
 }
 
-export default ManageLibraryPage
+export default ManageLibraryPage;

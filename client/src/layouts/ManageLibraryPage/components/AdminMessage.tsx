@@ -19,7 +19,7 @@ const AdminMessage: React.FC<{ message: MessageModel, submitResponseToQuestion: 
     return (
         <div key={props.message.id}>
             <div className='card mt-2 shadow p-3 bg-body rounded'>
-                <h5>Case #{props.message.id}: {props.message.title}</h5>
+                <h5>Case No. {props.message.id}: {props.message.title}</h5>
                 <h6>{props.message.userEmail}</h6>
                 <p>{props.message.question}</p>
                 <hr/>
