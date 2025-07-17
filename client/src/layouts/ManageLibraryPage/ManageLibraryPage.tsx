@@ -11,7 +11,7 @@ const ManageLibraryPage = () => {
     
     const { getIdTokenClaims } = useAuth0();
     const [roles, setRoles] = useState<string[] | null>(null); // Set roles to null initially
-    const [loading, setLoading] = useState(false); // Loading state to handle async data
+    const [loading, setLoading] = useState(true); // Loading state to handle async data
 
     const [changeQuantityOfBooksClick, setChangeQuantityOfBooksClick] = useState(false);
     const [messagesClick, setMessagesClick] = useState(false);
@@ -51,7 +51,6 @@ const ManageLibraryPage = () => {
     if (!roles?.includes('admin')) {
         return <Navigate to='/home'/>
     }
-    
 
     return (
         <div className='container'>

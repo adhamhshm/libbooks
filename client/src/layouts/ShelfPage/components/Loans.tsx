@@ -3,6 +3,7 @@ import type ShelfCurrentLoansModel from "../../../models/ShelfCurrentLoansModel"
 import SpinnerLoading from "../../Utils/SpinnerLoading";
 import { Link } from "react-router-dom";
 import LoansModal from "./LoansModal";
+import { useAuth0 } from "@auth0/auth0-react";
 
 const Loans = () => {
 
@@ -40,7 +41,7 @@ const Loans = () => {
             setHttpError(error.message);
         })
         window.scrollTo(0, 0);
-    }, [checkout]);
+    }, [checkout, getAccessTokenSilently, isAuthenticated]);
 
     if (isLoadingUserLoans) {
         return (
@@ -60,11 +61,11 @@ const Loans = () => {
 
     async function returnBook(bookId: number) {
         const url = `${import.meta.env.VITE_REACT_API_APP}/books/secure/return?bookId=${bookId}`;
-        // const accessToken = await getAccessTokenSilently();
+        const accessToken = await getAccessTokenSilently();
         const requestOptions = {
             method: 'PUT',
             headers: {
-                // Authorization: `Bearer ${accessToken}`,
+                Authorization: `Bearer ${accessToken}`,
                 'Content-Type': 'application/json'
             }
         };
@@ -77,11 +78,11 @@ const Loans = () => {
 
     async function renewLoan(bookId: number) {
         const url = `${import.meta.env.VITE_REACT_API_APP}/books/secure/renew/loan?bookId=${bookId}`;
-        // const accessToken = await getAccessTokenSilently();
+        const accessToken = await getAccessTokenSilently();
         const requestOptions = {
             method: 'PUT',
             headers: {
-                // Authorization: `Bearer ${accessToken}`,
+                Authorization: `Bearer ${accessToken}`,
                 'Content-Type': 'application/json'
             }
         };

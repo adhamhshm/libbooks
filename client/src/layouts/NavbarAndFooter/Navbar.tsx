@@ -5,7 +5,7 @@ import { NavLink } from "react-router-dom";
 const Navbar = () => {
 
 
-    const { isAuthenticated, loginWithRedirect: login, logout: auth0Logout, getIdTokenClaims } = useAuth0();
+    const { isAuthenticated, loginWithRedirect: login, logout: auth0Logout, getIdTokenClaims, user } = useAuth0();
     const [roles, setRoles] = useState<string[] | null>(null); 
     
     useEffect(() => {
@@ -60,8 +60,41 @@ const Navbar = () => {
                                 <button type='button' className='btn btn-outline-light' onClick={signin}>Sign in</button>
                             </li>
                             :
-                            <li>
-                                <button className='btn btn-outline-light' onClick={logout}>Logout</button>
+                            // <li className='nav-item dropdown'>
+                            //     <button
+                            //         className='btn btn-outline-light dropdown-toggle d-flex align-items-center gap-2'
+                            //         id='userDropdown'
+                            //         data-bs-toggle='dropdown'
+                            //         aria-expanded='false'
+                            //         >
+                            //         {user?.nickname}
+                            //     </button>
+                            //     <ul className='dropdown-menu dropdown-menu-end' aria-labelledby='userDropdown'>
+                            //         <li>
+                            //             <button className='dropdown-item' onClick={logout}>
+                            //                 Logout
+                            //             </button>
+                            //         </li>
+                            //     </ul>
+                            // </li>
+                            <li className="nav-item dropdown">
+                                <a
+                                    className="nav-link dropdown-toggle text-light d-flex align-items-center gap-2"
+                                    href="#"
+                                    id="userDropdown"
+                                    role="button"
+                                    data-bs-toggle="dropdown"
+                                    aria-expanded="false"
+                                >
+                                    {user?.nickname && user.nickname.charAt(0).toUpperCase() + user.nickname.slice(1)}
+                                </a>
+                                <ul className="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                                    <li>
+                                    <button className="dropdown-item" onClick={logout}>
+                                        Logout
+                                    </button>
+                                    </li>
+                                </ul>
                             </li>
                         }
                     </ul>

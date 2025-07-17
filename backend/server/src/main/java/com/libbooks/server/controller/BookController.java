@@ -7,13 +7,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
+//import org.slf4j.Logger;
+//import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
-@CrossOrigin("httpss://localhost:5173")
+@CrossOrigin("https://localhost:5173")
 @RestController
 @RequestMapping("/api/books")
 public class BookController {
+
+//    private static final Logger logger = LoggerFactory.getLogger(BookController.class);
 
     private BookService bookService;
 
@@ -31,6 +35,7 @@ public class BookController {
     @GetMapping("/secure/currentloans/count")
     public int currentLoansCount(@AuthenticationPrincipal Jwt jwt) {
         String userEmail = jwt.getClaim("email");
+        // logger.info("Get current loans count for: {}", userEmail);
         return bookService.currentLoansCount(userEmail);
     }
 

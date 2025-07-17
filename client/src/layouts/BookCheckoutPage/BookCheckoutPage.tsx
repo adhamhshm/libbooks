@@ -81,7 +81,7 @@ const BookCheckoutPage = () => {
             const responseReviews = await fetch(reviewUrl);
 
             if (!responseReviews.ok) {
-                throw new Error('Something went wrong!');
+                throw new Error('Something went wrong. Unable to fetch book reviews.');
             }
 
             const responseJsonReviews = await responseReviews.json();
@@ -125,7 +125,7 @@ const BookCheckoutPage = () => {
             if (isAuthenticated) {
                 // const url = `http://localhost:8080/api/reviews/secure/user/book/?bookId=${bookId}`;
                 const accessToken = await getAccessTokenSilently();
-                const url = `http://localhost:8080/api/reviews/secure/user/book?bookId=${bookId}`;
+                const url = `${import.meta.env.VITE_REACT_API_APP}/reviews/secure/user/book?bookId=${bookId}`;
 
                 const requestOptions = {
                     method: 'GET',
@@ -136,7 +136,7 @@ const BookCheckoutPage = () => {
                 };
                 const userReview = await fetch(url, requestOptions);
                 if (!userReview.ok) {
-                    throw new Error('Something went wrong');
+                    throw new Error('Something went wrong. Unable to fetch user review.');
                 }
                 const userReviewResponseJson = await userReview.json();
                 setIsReviewLeft(userReviewResponseJson);
@@ -193,7 +193,7 @@ const BookCheckoutPage = () => {
                 const bookCheckedOut = await fetch(url, requestOptions);
 
                 if (!bookCheckedOut.ok) {
-                    throw new Error('Something went wrong!');
+                    throw new Error('Something went wrong. Unable to check if book is checked out.');
                 }
 
                 const bookCheckedOutResponseJson = await bookCheckedOut.json();
