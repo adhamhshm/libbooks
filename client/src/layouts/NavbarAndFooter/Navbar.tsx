@@ -47,6 +47,11 @@ const Navbar = () => {
                             <li className='nav-item'>
                                 <NavLink className='nav-link' to='/shelf'>Shelf</NavLink>
                             </li>
+                        }
+                        {isAuthenticated &&
+                            <li className='nav-item'>
+                                <NavLink className='nav-link' to='/fees'>Fees</NavLink>
+                            </li>
                         } 
                         {isAuthenticated && roles?.includes(`${import.meta.env.VITE_ROLE_ADMIN}`) &&
                             <li className='nav-item'>
@@ -60,23 +65,6 @@ const Navbar = () => {
                                 <button type='button' className='btn btn-outline-light' onClick={signin}>Sign in</button>
                             </li>
                             :
-                            // <li className='nav-item dropdown'>
-                            //     <button
-                            //         className='btn btn-outline-light dropdown-toggle d-flex align-items-center gap-2'
-                            //         id='userDropdown'
-                            //         data-bs-toggle='dropdown'
-                            //         aria-expanded='false'
-                            //         >
-                            //         {user?.nickname}
-                            //     </button>
-                            //     <ul className='dropdown-menu dropdown-menu-end' aria-labelledby='userDropdown'>
-                            //         <li>
-                            //             <button className='dropdown-item' onClick={logout}>
-                            //                 Logout
-                            //             </button>
-                            //         </li>
-                            //     </ul>
-                            // </li>
                             <li className="nav-item dropdown">
                                 <a
                                     className="nav-link dropdown-toggle text-light d-flex align-items-center gap-2"

@@ -1,12 +1,17 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js'; // optional, for dropdowns, modals, etc.
 import 'bootstrap-icons/font/bootstrap-icons.css';
-
+import {Elements} from '@stripe/react-stripe-js';
+import {loadStripe} from '@stripe/stripe-js';
 import { createRoot } from 'react-dom/client'
 import './index.css'
 import App from './App.tsx'
 import { BrowserRouter } from 'react-router-dom';
 import { Auth0Provider } from '@auth0/auth0-react';
+
+// Make sure to call `loadStripe` outside of a component’s render to avoid
+// recreating the `Stripe` object on every render.
+const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_API_KEY);
 
 createRoot(document.getElementById('root')!).render(
     <BrowserRouter>
@@ -19,7 +24,9 @@ createRoot(document.getElementById('root')!).render(
               scope: 'openid profile email',
             }}
         >
-            <App />
+            <Elements stripe={stripePromise}>
+                <App />
+            </Elements>
         </Auth0Provider>
     </BrowserRouter>,
 )

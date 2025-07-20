@@ -12,6 +12,7 @@ import MessagesPage from './layouts/MessagesPage/MessagesPage'
 import ManageLibraryPage from './layouts/ManageLibraryPage/ManageLibraryPage'
 import { useAuth0 } from '@auth0/auth0-react'
 import SpinnerLoading from './layouts/Utils/SpinnerLoading'
+import PaymentPage from './layouts/PaymentPage/PaymentPage'
 
 const App = () => {
 
@@ -38,6 +39,7 @@ const App = () => {
                     <Route path='/login' element={<LoginPage />} />
                     <Route path='/admin' element={<ManageLibraryPage />} />
                     <Route path='/shelf' element={<ShelfPage />} />
+                    <Route path='/fees' element={<PaymentPage />} />
                     <Route path='*' element={<Navigate to="/home" replace />} />
                 </Routes>
             </div>

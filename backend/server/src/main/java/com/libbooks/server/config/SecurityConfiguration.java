@@ -29,7 +29,8 @@ public class SecurityConfiguration {
                                 "/api/books/secure/**",
                                 "/api/reviews/secure/**",
                                 "/api/messages/secure/**",
-                                "/api/admin/secure/**"
+                                "/api/admin/secure/**",
+                                "/api/payments/secure/**"
                         ).authenticated()
                         .anyRequest().permitAll() // Allow all other endpoints to be accessed without authentication
                 )
