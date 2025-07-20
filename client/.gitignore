@@ -14,8 +14,8 @@ dist-ssr
 .env
 
 # SSL cert
-/cert/*.pem
-/cert/*.key
+src/cert/*.pem
+src/cert/*.key
 
 # Editor directories and files
 .vscode/*
